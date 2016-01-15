@@ -31,7 +31,7 @@ class DoctrineProvider {
         $config
             ->ensure('debug', 'Missing debug setting.')
             ->ensure('db', 'Missing doctrine configurations.')
-            ->ensure('db.entities_paths', 'Missing list of directory paths where entities reside in.');
+            ->ensure('db.entity_paths', 'Missing list of directory paths where entities reside in.');
     }
 
     /**
@@ -41,7 +41,7 @@ class DoctrineProvider {
      * @throws \Doctrine\ORM\ORMException
      */
     protected function createObjectManager(IConfig $config) {
-        $entitiesPath = [$config->get('src')];
+        $entitiesPath = [$config->get('db.entity_paths')];
         $parameters = $config->get('db');
         $debug = $config->get('debug');
 

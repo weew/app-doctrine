@@ -17,7 +17,7 @@ class DoctrineProviderTest extends PHPUnit_Framework_TestCase {
             'db' => [
                 'driver' => 'pdo_sqlite',
                 'memory' => true,
-                'entities_paths' => []
+                'entity_paths' => []
             ],
         ]);
 
