@@ -18,7 +18,7 @@ class DoctrineProvider {
     public function initialize(IConfig $config, IContainer $container) {
         $this->ensureConfig($config);
         $objectManager = $this->createObjectManager($config);
-        $this->shareEntityManagerInstance($container, $objectManager);
+        $this->shareObjectManagerInstance($container, $objectManager);
         $this->enableContainerInjectionOfRepositories($container, $objectManager);
     }
 
@@ -56,7 +56,7 @@ class DoctrineProvider {
      * @param IContainer $container
      * @param ObjectManager $objectManager
      */
-    protected function shareEntityManagerInstance(
+    protected function shareObjectManagerInstance(
         IContainer $container,
         ObjectManager $objectManager
     ) {
