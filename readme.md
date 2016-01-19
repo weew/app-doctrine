@@ -24,8 +24,8 @@ This package integrates the [doctrine/orm](https://github.com/doctrine/doctrine2
 ## Requirements
 
 To be able to use this package you must ensure certain configs are set:
-- `db` all doctrine database related stuff
-- `db.entity_paths` list of directories where entities reside in
+- `doctrine.config` all doctrine database related stuff
+- `doctrine.entities_path` path to the directory with entities
 - `debug` debug mode setting
 
 ## Usage
