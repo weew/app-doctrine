@@ -29,9 +29,9 @@ class DoctrineProvider {
      */
     protected function ensureConfig(IConfig $config) {
         $config
-            ->ensure('debug', 'Missing debug setting.')
-            ->ensure('db', 'Missing doctrine configurations.')
-            ->ensure('db.entity_paths', 'Missing list of directory paths where entities reside in.');
+            ->ensure(DoctrineConfigKey::DEBUG, 'Missing debug setting.')
+            ->ensure(DoctrineConfigKey::CONFIG, 'Missing doctrine configurations.')
+            ->ensure(DoctrineConfigKey::ENTITIES_PATH, 'Missing path to directory where entities reside in.');
     }
 
     /**
@@ -41,9 +41,9 @@ class DoctrineProvider {
      * @throws \Doctrine\ORM\ORMException
      */
     protected function createObjectManager(IConfig $config) {
-        $entitiesPath = [$config->get('db.entity_paths')];
-        $parameters = $config->get('db');
-        $debug = $config->get('debug');
+        $entitiesPath = [$config->get(DoctrineConfigKey::ENTITIES_PATH)];
+        $parameters = $config->get(DoctrineConfigKey::CONFIG);
+        $debug = $config->get(DoctrineConfigKey::DEBUG);
 
         $configuration = Setup::createAnnotationMetadataConfiguration(
             $entitiesPath, $debug
