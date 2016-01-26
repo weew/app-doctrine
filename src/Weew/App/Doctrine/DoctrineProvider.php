@@ -2,6 +2,7 @@
 
 namespace Weew\App\Doctrine;
 
+use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,8 @@ class DoctrineProvider {
         $config
             ->ensure(DoctrineConfigKey::DEBUG, 'Missing debug setting.')
             ->ensure(DoctrineConfigKey::CONFIG, 'Missing doctrine configurations.')
-            ->ensure(DoctrineConfigKey::ENTITIES_PATH, 'Missing path to directory where entities reside in.');
+            ->ensure(DoctrineConfigKey::ENTITIES_PATH, 'Missing path to directory where entities reside in.')
+            ->ensure(DoctrineConfigKey::CACHE_PATH, 'Missing path to doctrine cache directory.');
     }
 
     /**
@@ -44,9 +46,16 @@ class DoctrineProvider {
         $entitiesPath = [$config->get(DoctrineConfigKey::ENTITIES_PATH)];
         $parameters = $config->get(DoctrineConfigKey::CONFIG);
         $debug = $config->get(DoctrineConfigKey::DEBUG);
+        $proxyDir = null;
+        $cachePath = $config->get(DoctrineConfigKey::CACHE_PATH);
+        $cache = null;
+
+        if ($cachePath !== null) {
+            $cache = new FilesystemCache($cachePath, 'dc');
+        }
 
         $configuration = Setup::createAnnotationMetadataConfiguration(
-            $entitiesPath, $debug
+            $entitiesPath, $debug, null, $cache
         );
 
         return EntityManager::create($parameters, $configuration);

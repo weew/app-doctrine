@@ -20,6 +20,7 @@ class DoctrineProviderTest extends PHPUnit_Framework_TestCase {
             'memory' => true,
         ]);
         $config->set(DoctrineConfigKey::ENTITIES_PATH, '');
+        $config->set(DoctrineConfigKey::CACHE_PATH, '/tmp');
 
         $app->getKernel()->addProvider(DoctrineProvider::class);
 
