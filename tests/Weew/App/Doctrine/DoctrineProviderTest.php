@@ -7,20 +7,20 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit_Framework_TestCase;
 use Weew\App\App;
-use Weew\App\Doctrine\DoctrineConfigKey;
+use Weew\App\Doctrine\DoctrineConfig;
 use Weew\App\Doctrine\DoctrineProvider;
 
 class DoctrineProviderTest extends PHPUnit_Framework_TestCase {
     protected function createApp() {
         $app = new App();
         $config = $app->loadConfig();
-        $config->set(DoctrineConfigKey::DEBUG, true);
-        $config->set(DoctrineConfigKey::CONFIG, [
+        $config->set(DoctrineConfig::DEBUG, true);
+        $config->set(DoctrineConfig::CONFIG, [
             'driver' => 'pdo_sqlite',
             'memory' => true,
         ]);
-        $config->set(DoctrineConfigKey::ENTITIES_PATH, '');
-        $config->set(DoctrineConfigKey::CACHE_PATH, '/tmp');
+        $config->set(DoctrineConfig::ENTITIES_PATH, '');
+        $config->set(DoctrineConfig::CACHE_PATH, '/tmp');
 
         $app->getKernel()->addProvider(DoctrineProvider::class);
 

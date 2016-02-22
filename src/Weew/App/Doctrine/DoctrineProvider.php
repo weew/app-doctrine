@@ -7,47 +7,32 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
-use Weew\Config\IConfig;
 use Weew\Container\DoctrineIntegration\DoctrineRepositoriesLoader;
 use Weew\Container\IContainer;
 
 class DoctrineProvider {
     /**
-     * @param IConfig $config
+     * @param DoctrineConfig $config
      * @param IContainer $container
      */
-    public function initialize(IConfig $config, IContainer $container) {
-        $this->ensureConfig($config);
+    public function initialize(DoctrineConfig $config, IContainer $container) {
         $objectManager = $this->createObjectManager($config);
         $this->shareObjectManagerInstance($container, $objectManager);
         $this->enableContainerInjectionOfRepositories($container, $objectManager);
     }
 
     /**
-     * Ensure certain configurations are set.
-     *
-     * @param IConfig $config
-     */
-    protected function ensureConfig(IConfig $config) {
-        $config
-            ->ensure(DoctrineConfigKey::DEBUG, 'Missing debug setting.')
-            ->ensure(DoctrineConfigKey::CONFIG, 'Missing doctrine configurations.')
-            ->ensure(DoctrineConfigKey::ENTITIES_PATH, 'Missing path to directory where entities reside in.')
-            ->ensure(DoctrineConfigKey::CACHE_PATH, 'Missing path to doctrine cache directory.');
-    }
-
-    /**
-     * @param IConfig $config
+     * @param DoctrineConfig
      *
      * @return EntityManager
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function createObjectManager(IConfig $config) {
-        $entitiesPath = [$config->get(DoctrineConfigKey::ENTITIES_PATH)];
-        $parameters = $config->get(DoctrineConfigKey::CONFIG);
-        $debug = $config->get(DoctrineConfigKey::DEBUG);
+    protected function createObjectManager(DoctrineConfig $config) {
+        $entitiesPath = [$config->getEntitiesPath()];
+        $parameters = $config->getConfig();
+        $debug = $config->getDebug();
         $proxyDir = null;
-        $cachePath = $config->get(DoctrineConfigKey::CACHE_PATH);
+        $cachePath = $config->getCachePath();
         $cache = null;
 
         if ($cachePath !== null) {
