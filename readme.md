@@ -12,6 +12,7 @@
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Usage](#usage)
+- [Example config](#example-config)
 
 ## Installation
 
@@ -37,4 +38,21 @@ $app = new App();
 $app->getKernel()->addProviders([
     DoctrineProvider::class,
 ]);
+```
+
+## Example config
+
+This is how your config *might* look like in yaml:
+
+```yaml
+    debug: true
+    doctrine:
+        entities_path: "path/to/entities"
+        cache_path: "path/to/cache"
+        config:
+            driver: "pdo_mysql"
+            host: "database_hostname"
+            dbname: "database_name"
+            user: "database_user"
+            password: "database_password"
 ```
