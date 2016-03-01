@@ -22,4 +22,19 @@ interface IDoctrineConfig {
      * @return string
      */
     function getCachePath();
+
+    /**
+     * @return string
+     */
+    function getMigrationsNamespace();
+
+    /**
+     * @return string
+     */
+    function getMigrationsPath();
+
+    /**
+     * @return string
+     */
+    function getMigrationsTable();
 }

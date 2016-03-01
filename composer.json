@@ -20,6 +20,7 @@
     },
     "require": {
         "doctrine/orm": "^2.5",
+        "doctrine/migrations": "^1.4",
         "weew/php-container-doctrine-integration": "^1.0",
         "weew/php-config": "^1.2",
         "weew/php-app": "^1.2"

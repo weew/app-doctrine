@@ -10,9 +10,9 @@
 
 - [Installation](#installation)
 - [Introduction](#introduction)
-- [Requirements](#requirements)
 - [Usage](#usage)
 - [Example config](#example-config)
+- [Doctrine console](#doctrine-console)
 
 ## Installation
 
@@ -20,14 +20,7 @@
 
 ## Introduction
 
-This package integrates the [doctrine/orm](https://github.com/doctrine/doctrine2) package into the [weew/php-app](https://github.com/weew/php-app) framework.
-
-## Requirements
-
-To be able to use this package you must ensure certain configs are set:
-- `doctrine.config` all doctrine database related stuff
-- `doctrine.entities_path` path to the directory with entities
-- `debug` debug mode setting
+This package integrates [doctrine/orm](https://github.com/doctrine/doctrine2) and [doctrine/migrations](https://github.com/doctrine/migrations) into the [weew/php-app](https://github.com/weew/php-app) framework.
 
 ## Usage
 
@@ -46,13 +39,28 @@ This is how your config *might* look like in yaml:
 
 ```yaml
     debug: true
+
     doctrine:
         entities_path: "path/to/entities"
         cache_path: "path/to/cache"
+
         config:
             driver: "pdo_mysql"
             host: "database_hostname"
             dbname: "database_name"
             user: "database_user"
             password: "database_password"
+
+        migrations:
+            namespace: "migrations/namespace"
+            path: "migrations/directory/path"
+            table: "migrations_table_name"
+```
+
+## Doctrine console
+
+You can run doctrine console tool like this:
+
+```php
+$doctrineProvider->runConsoleRunner();
 ```
