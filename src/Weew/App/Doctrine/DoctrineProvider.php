@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Weew\Container\DoctrineIntegration\DoctrineRepositoriesLoader;
 use Weew\Container\IContainer;
@@ -52,7 +53,15 @@ class DoctrineProvider {
         $configuration = Setup::createAnnotationMetadataConfiguration(
             $entitiesPath, $debug, null, $cache
         );
+        $configuration->setNamingStrategy($this->createNamingStrategy());
 
         return EntityManager::create($parameters, $configuration);
+    }
+
+    /**
+     * @return UnderscoreNamingStrategy
+     */
+    protected function createNamingStrategy() {
+        return new UnderscoreNamingStrategy();
     }
 }
