@@ -7,7 +7,7 @@ use Weew\App\Doctrine\DoctrineProvider;
 require __DIR__ . '/../../../../vendor/autoload.php';
 
 $app = new App();
-$config = $app->loadConfig();
+$config = $app->getConfig();
 $config->set(DoctrineConfig::DEBUG, true);
 $config->set(DoctrineConfig::CONFIG, [
     'driver' => 'pdo_sqlite',

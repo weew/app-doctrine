@@ -12,7 +12,7 @@ class AppFactory {
      */
     public function createApp() {
         $app = new App();
-        $config = $app->loadConfig();
+        $config = $app->getConfig();
         $config->set(DoctrineConfig::DEBUG, true);
         $config->set(DoctrineConfig::CONFIG, [
             'driver' => 'pdo_sqlite',
