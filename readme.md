@@ -38,9 +38,9 @@ $app->getKernel()->addProviders([
 This is how your config *might* look like in yaml:
 
 ```yaml
-    debug: true
-
     doctrine:
+        debug: true
+
         entities_path: "path/to/entities"
         cache_path: "path/to/cache"
 
