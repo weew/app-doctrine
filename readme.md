@@ -38,23 +38,23 @@ $app->getKernel()->addProviders([
 This is how your config *might* look like in yaml:
 
 ```yaml
-    doctrine:
-        debug: true
+doctrine:
+  debug: true
 
-        entities_path: "path/to/entities"
-        cache_path: "path/to/cache"
+  entities_path: "path/to/entities"
+  cache_path: "path/to/cache"
 
-        config:
-            driver: "pdo_mysql"
-            host: "database_hostname"
-            dbname: "database_name"
-            user: "database_user"
-            password: "database_password"
+  config:
+    driver: "pdo_mysql"
+    host: "database_hostname"
+    dbname: "database_name"
+    user: "database_user"
+    password: "database_password"
 
-        migrations:
-            namespace: "migrations/namespace"
-            path: "migrations/directory/path"
-            table: "migrations_table_name"
+  migrations:
+    namespace: "migrations/namespace"
+    path: "migrations/directory/path"
+    table: "migrations_table_name"
 ```
 
 ## Doctrine console
