@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\NamingStrategy;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Weew\Container\DoctrineIntegration\DoctrineRepositoriesLoader;
 use Weew\Container\IContainer;
@@ -62,6 +63,6 @@ class DoctrineProvider {
      * @return NamingStrategy
      */
     protected function createNamingStrategy() {
-        return new CamelCaseNamingStrategy();
+        return new UnderscoreNamingStrategy();
     }
 }
