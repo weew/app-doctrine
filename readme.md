@@ -44,12 +44,12 @@ doctrine:
   cache_path: path/to/cache
   metadata_format: "yaml" or "annotations"
 
-  # requiired if metadata_format is "annotations"
+  # required if metadata_format is "annotations"
   entities_paths:
     app: path/to/entities
     bundle: path/to/bundle/entities
 
-  # requiired if metadata_format is "yaml"
+  # required if metadata_format is "yaml"
   entities_mappings:
     app:
       path: path/to/entities
