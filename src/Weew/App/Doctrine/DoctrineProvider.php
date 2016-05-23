@@ -4,11 +4,14 @@ namespace Weew\App\Doctrine;
 
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
 use Doctrine\ORM\Mapping\NamingStrategy;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
+use RuntimeException;
 use Weew\Container\DoctrineIntegration\DoctrineRepositoriesLoader;
 use Weew\Container\IContainer;
 
@@ -40,10 +43,50 @@ class DoctrineProvider {
      * @throws \Doctrine\ORM\ORMException
      */
     public function createEntityManager(IDoctrineConfig $config) {
-        $entitiesPath = [$config->getEntitiesPath()];
         $parameters = $config->getConfig();
-        $debug = $config->getDebug();
         $proxyDir = null;
+
+        $configuration = $this->createConfiguration($config);
+        $configuration->setNamingStrategy($this->createNamingStrategy());
+
+        return EntityManager::create($parameters, $configuration);
+    }
+
+    /**
+     * @param IDoctrineConfig $config
+     *
+     * @return Configuration
+     */
+    protected function createConfiguration(
+        IDoctrineConfig $config
+    ) {
+        if ($config->getMetadataFormat() === 'annotations') {
+            return Setup::createAnnotationMetadataConfiguration(
+                $config->getEntitiesPaths(),
+                $config->getDebug(),
+                null,
+                $this->getCache($config)
+            );
+        } else if ($config->getMetadataFormat() === 'yaml') {
+            $driver = new SimplifiedYamlDriver($config->getRestructuredEntitiesMappings());
+            $configuration = Setup::createConfiguration($config->getDebug(), null, $this->getCache($config));
+            $configuration->setMetadataDriverImpl($driver);
+
+            return $configuration;
+        }
+
+        throw new RuntimeException(s(
+            'Could not create doctrine configuration for metadata format "%s".',
+            $config->getMetadataFormat()
+        ));
+    }
+
+    /**
+     * @param IDoctrineConfig $config
+     *
+     * @return FilesystemCache|null
+     */
+    protected function getCache(IDoctrineConfig $config) {
         $cachePath = $config->getCachePath();
         $cache = null;
 
@@ -51,12 +94,7 @@ class DoctrineProvider {
             $cache = new FilesystemCache($cachePath, 'dc');
         }
 
-        $configuration = Setup::createAnnotationMetadataConfiguration(
-            $entitiesPath, $debug, null, $cache
-        );
-        $configuration->setNamingStrategy($this->createNamingStrategy());
-
-        return EntityManager::create($parameters, $configuration);
+        return $cache;
     }
 
     /**

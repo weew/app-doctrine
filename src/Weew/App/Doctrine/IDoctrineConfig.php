@@ -16,7 +16,36 @@ interface IDoctrineConfig {
     /**
      * @return string
      */
-    function getEntitiesPath();
+    function getMetadataFormat();
+
+    /**
+     * @return array
+     */
+    function getEntitiesPaths();
+
+    /**
+     * @return array
+     */
+    function getEntitiesMappings();
+
+    /**
+     * @param string $identifier
+     *
+     * @return string
+     */
+    function getEntitiesMappingsPath($identifier);
+
+    /**
+     * @param string $identifier
+     *
+     * @return string
+     */
+    function getEntitiesMappingsNamespace($identifier);
+
+    /**
+     * @return array
+     */
+    function getRestructuredEntitiesMappings();
 
     /**
      * @return string

@@ -14,7 +14,7 @@ $config->set(DoctrineConfig::CONFIG, [
     'memory' => true,
 ]);
 
-$config->set(DoctrineConfig::ENTITIES_PATH, '');
+$config->set(DoctrineConfig::ENTITIES_PATHS, '');
 $config->set(DoctrineConfig::CACHE_PATH, '/tmp');
 $config->set(DoctrineConfig::MIGRATIONS_PATH, '/tmp');
 $config->set(DoctrineConfig::MIGRATIONS_NAMESPACE, 'migrations');

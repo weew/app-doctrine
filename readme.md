@@ -41,20 +41,34 @@ This is how your config *might* look like in yaml:
 doctrine:
   debug: true
 
-  entities_path: "path/to/entities"
-  cache_path: "path/to/cache"
+  cache_path: path/to/cache
+  metadata_format: "yaml" or "annotations"
+
+  # requiired if metadata_format is "annotations"
+  entities_paths:
+    app: path/to/entities
+    bundle: path/to/bundle/entities
+
+  # requiired if metadata_format is "yaml"
+  entities_mappings:
+    app:
+      path: path/to/entities
+      namespace: Some\Entities
+    bundle:
+      path: path/to/bundle/entities
+      namespace: Other\Entities
 
   config:
-    driver: "pdo_mysql"
-    host: "database_hostname"
-    dbname: "database_name"
-    user: "database_user"
-    password: "database_password"
+    driver: pdo_mysql
+    host: database_hostname
+    dbname: database_name
+    user: database_user
+    password: database_password
 
   migrations:
-    namespace: "migrations/namespace"
-    path: "migrations/directory/path"
-    table: "migrations_table_name"
+    namespace: migrations/namespace
+    path: migrations/directory/path
+    table: migrations_table_name
 ```
 
 ## Doctrine console
