@@ -16,14 +16,6 @@ class DoctrineConfig implements IDoctrineConfig {
     const MIGRATIONS_PATH = 'doctrine.migrations.path';
     const MIGRATIONS_TABLE = 'doctrine.migrations.table';
 
-    public static function ENTITIES_MAPPINGS_PATH($identifier) {
-        return s('doctrine.entities_mappings.%s.path', $identifier);
-    }
-
-    public static function ENTITIES_MAPPINGS_NAMESPACE($identifier) {
-        return s('doctrine.entities_mappings.%s.namespace', $identifier);
-    }
-
     /**
      * @var IConfig
      */
@@ -54,18 +46,6 @@ class DoctrineConfig implements IDoctrineConfig {
         } else if ($this->getMetadataFormat() === 'yaml') {
             $config
                 ->ensure(self::ENTITIES_MAPPINGS, 'Missing doctrine entities mappings for yaml format.', 'array');
-
-            foreach ($this->getEntitiesMappings() as $identifier => $mapping) {
-                $config->ensure(
-                    self::ENTITIES_MAPPINGS_PATH($identifier),
-                    s('Missing entities_mappings.path at index "%s".', $identifier)
-                );
-
-                $config->ensure(
-                    self::ENTITIES_MAPPINGS_NAMESPACE($identifier),
-                    s('Missing entities_mappings.namespace at index "%s".', $identifier)
-                );
-            }
         } else {
             throw new InvalidConfigValueException(s(
                 'Invalid format "%s", supported formats are "annotations" and "yaml".',
@@ -107,41 +87,6 @@ class DoctrineConfig implements IDoctrineConfig {
      */
     public function getEntitiesMappings() {
         return $this->config->get(self::ENTITIES_MAPPINGS);
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    public function getEntitiesMappingsPath($identifier) {
-        return $this->config->get(
-            self::ENTITIES_MAPPINGS_PATH($identifier)
-        );
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    public function getEntitiesMappingsNamespace($identifier) {
-        return $this->config->get(
-            self::ENTITIES_MAPPINGS_NAMESPACE($identifier)
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function getRestructuredEntitiesMappings() {
-        $mappings = [];
-
-        foreach ($this->getEntitiesMappings() as $identifier => $mapping) {
-            $mappings[$this->getEntitiesMappingsPath($identifier)] = $this->getEntitiesMappingsNamespace($identifier);
-        }
-
-        return $mappings;
     }
 
     /**

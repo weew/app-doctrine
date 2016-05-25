@@ -68,7 +68,7 @@ class DoctrineProvider {
                 $this->getCache($config)
             );
         } else if ($config->getMetadataFormat() === 'yaml') {
-            $driver = new SimplifiedYamlDriver($config->getRestructuredEntitiesMappings());
+            $driver = new SimplifiedYamlDriver($config->getEntitiesMappings());
             $configuration = Setup::createConfiguration($config->getDebug(), null, $this->getCache($config));
             $configuration->setMetadataDriverImpl($driver);
 

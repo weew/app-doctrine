@@ -29,25 +29,6 @@ interface IDoctrineConfig {
     function getEntitiesMappings();
 
     /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    function getEntitiesMappingsPath($identifier);
-
-    /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    function getEntitiesMappingsNamespace($identifier);
-
-    /**
-     * @return array
-     */
-    function getRestructuredEntitiesMappings();
-
-    /**
      * @return string
      */
     function getCachePath();

@@ -14,7 +14,7 @@ class DoctrineConfigTest extends PHPUnit_Framework_TestCase {
         $config->set(DoctrineConfig::METADATA_FORMAT, 'yaml');
         $config->set(DoctrineConfig::ENTITIES_PATHS, ['entities_path']);
         $config->set(DoctrineConfig::ENTITIES_MAPPINGS, [
-            ['path' => '/path', 'namespace' => 'some/namespace']
+            '/path' => 'some\namespace',
         ]);
         $config->set(DoctrineConfig::CACHE_PATH, 'cache_path');
         $config->set(DoctrineConfig::CONFIG, 'config');
@@ -31,8 +31,7 @@ class DoctrineConfigTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('debug', $doctrineConfig->getDebug());
         $this->assertEquals('yaml', $doctrineConfig->getMetadataFormat());
         $this->assertEquals(['entities_path'], $doctrineConfig->getEntitiesPaths());
-        $this->assertEquals([['path' => '/path', 'namespace' => 'some/namespace']], $doctrineConfig->getEntitiesMappings());
-        $this->assertEquals(['/path' => 'some/namespace'], $doctrineConfig->getRestructuredEntitiesMappings());
+        $this->assertEquals(['/path' => 'some\namespace'], $doctrineConfig->getEntitiesMappings());
         $this->assertEquals('cache_path', $doctrineConfig->getCachePath());
         $this->assertEquals('config', $doctrineConfig->getConfig());
         $this->assertEquals('migrations_namespace', $doctrineConfig->getMigrationsNamespace());

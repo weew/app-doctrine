@@ -46,8 +46,7 @@ doctrine:
 
   # required if metadata_format is "annotations"
   entities_paths:
-    app: path/to/entities
-    bundle: path/to/bundle/entities
+    path/to/entities: Namespace\To\Entities
 
   # required if metadata_format is "yaml"
   entities_mappings:
