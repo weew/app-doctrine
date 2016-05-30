@@ -92,4 +92,11 @@ class FakeDoctrineConfig implements IDoctrineConfig {
     function getMigrationsTable() {
         // TODO: Implement getMigrationsTable() method.
     }
+
+    /**
+     * @return string
+     */
+    function getProxyClassesPath() {
+        // TODO: Implement getProxyClassesPath() method.
+    }
 }

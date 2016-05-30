@@ -36,6 +36,11 @@ interface IDoctrineConfig {
     /**
      * @return string
      */
+    function getProxyClassesPath();
+
+    /**
+     * @return string
+     */
     function getMigrationsNamespace();
 
     /**

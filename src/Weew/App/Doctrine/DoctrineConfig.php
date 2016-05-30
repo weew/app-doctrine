@@ -12,6 +12,7 @@ class DoctrineConfig implements IDoctrineConfig {
     const ENTITIES_PATHS = 'doctrine.entities_paths';
     const ENTITIES_MAPPINGS = 'doctrine.entities_mappings';
     const CACHE_PATH = 'doctrine.cache_path';
+    const PROXY_CLASSES_PATH = 'doctrine.proxy_classes_path';
     const MIGRATIONS_NAMESPACE = 'doctrine.migrations.namespace';
     const MIGRATIONS_PATH = 'doctrine.migrations.path';
     const MIGRATIONS_TABLE = 'doctrine.migrations.table';
@@ -94,6 +95,16 @@ class DoctrineConfig implements IDoctrineConfig {
      */
     public function getCachePath() {
         return $this->config->get(self::CACHE_PATH);
+    }
+
+    public function getProxyClassesPath() {
+        $path = $this->config->get(self::PROXY_CLASSES_PATH);
+
+        if ($path === null) {
+            $path = $this->getCachePath();
+        }
+
+        return $path;
     }
 
     /**

@@ -42,6 +42,7 @@ doctrine:
   debug: true
 
   cache_path: path/to/cache
+  proxy_classes_path: path/to/proxies
   metadata_format: "yaml" or "annotations"
 
   # required if metadata_format is "annotations"

@@ -63,7 +63,6 @@ class DoctrineProvider {
     ) {
         $configuration = null;
 
-        // create annotations metadata configuration
         if ($config->getMetadataFormat() === 'annotations') {
             $configuration = Setup::createAnnotationMetadataConfiguration(
                 $config->getEntitiesPaths(),
@@ -71,27 +70,22 @@ class DoctrineProvider {
                 null,
                 $this->getCache($config)
             );
-        }
-        // create yaml metadata configuration
-        else if ($config->getMetadataFormat() === 'yaml') {
+        } else if ($config->getMetadataFormat() === 'yaml') {
             $driver = new SimplifiedYamlDriver($config->getEntitiesMappings());
-            $configuration = Setup::createConfiguration($config->getDebug(), null, $this->getCache($config));
+            $configuration = Setup::createConfiguration(
+                $config->getDebug(),
+                null,
+                $this->getCache($config)
+            );
             $configuration->setMetadataDriverImpl($driver);
         }
 
-        // apply additional settings
         if ($configuration instanceof Configuration) {
-            if ($config->getDebug()) {
-                // if debug is enabled, always generate proxy classes
-                $configuration->setAutoGenerateProxyClasses(
-                    AbstractProxyFactory::AUTOGENERATE_ALWAYS
-                );
-            } else {
-                // only generate proxy classes if necessary
-                $configuration->setAutoGenerateProxyClasses(
-                    AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
-                );
-            }
+            $configuration->setAutoGenerateProxyClasses(
+                $this->getProxyClassesGenerationStrategy($config)
+            );
+
+            $configuration->setProxyDir($config->getProxyClassesPath());
 
             return $configuration;
         }
@@ -116,6 +110,19 @@ class DoctrineProvider {
         }
 
         return $cache;
+    }
+
+    /**
+     * @param IDoctrineConfig $config
+     *
+     * @return int
+     */
+    protected function getProxyClassesGenerationStrategy(IDoctrineConfig $config) {
+        if ($config->getDebug()) {
+            return AbstractProxyFactory::AUTOGENERATE_ALWAYS;
+        } else {
+            return AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS;
+        }
     }
 
     /**
