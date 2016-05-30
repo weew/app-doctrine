@@ -19,6 +19,12 @@ class DoctrineProviderTest extends PHPUnit_Framework_TestCase {
         $factory->createApp('yaml')->run();
     }
 
+    public function test_create_with_debug_disabled() {
+        $factory = new AppFactory();
+        $factory->createApp('annotations', false)->run();
+        $factory->createApp('yaml', false)->run();
+    }
+
     public function test_provider_throws_error_if_doctrine_configuration_cant_be_created() {
         $provider = new DoctrineProvider();
         $config = new FakeDoctrineConfig();

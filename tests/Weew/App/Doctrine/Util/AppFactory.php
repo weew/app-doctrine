@@ -10,13 +10,14 @@ use Weew\Config\Config;
 class AppFactory {
     /**
      * @param string $metadataFormat
+     * @param bool $debug
      *
      * @return App
      */
-    public function createApp($metadataFormat = 'yaml') {
+    public function createApp($metadataFormat = 'yaml', $debug = true) {
         $app = new App();
         $config = new Config();
-        $config->set(DoctrineConfig::DEBUG, true);
+        $config->set(DoctrineConfig::DEBUG, $debug);
         $config->set(DoctrineConfig::CONFIG, [
             'driver' => 'pdo_sqlite',
             'memory' => true,

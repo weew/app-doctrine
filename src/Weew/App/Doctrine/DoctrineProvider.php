@@ -4,6 +4,7 @@ namespace Weew\App\Doctrine;
 
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,17 +61,37 @@ class DoctrineProvider {
     protected function createConfiguration(
         IDoctrineConfig $config
     ) {
+        $configuration = null;
+
+        // create annotations metadata configuration
         if ($config->getMetadataFormat() === 'annotations') {
-            return Setup::createAnnotationMetadataConfiguration(
+            $configuration = Setup::createAnnotationMetadataConfiguration(
                 $config->getEntitiesPaths(),
                 $config->getDebug(),
                 null,
                 $this->getCache($config)
             );
-        } else if ($config->getMetadataFormat() === 'yaml') {
+        }
+        // create yaml metadata configuration
+        else if ($config->getMetadataFormat() === 'yaml') {
             $driver = new SimplifiedYamlDriver($config->getEntitiesMappings());
             $configuration = Setup::createConfiguration($config->getDebug(), null, $this->getCache($config));
             $configuration->setMetadataDriverImpl($driver);
+        }
+
+        // apply additional settings
+        if ($configuration instanceof Configuration) {
+            if ($config->getDebug()) {
+                // if debug is enabled, always generate proxy classes
+                $configuration->setAutoGenerateProxyClasses(
+                    AbstractProxyFactory::AUTOGENERATE_ALWAYS
+                );
+            } else {
+                // only generate proxy classes if necessary
+                $configuration->setAutoGenerateProxyClasses(
+                    AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
+                );
+            }
 
             return $configuration;
         }
