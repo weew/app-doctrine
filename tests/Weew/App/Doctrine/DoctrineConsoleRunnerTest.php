@@ -31,16 +31,4 @@ class DoctrineConsoleRunnerTest extends PHPUnit_Framework_TestCase {
         $commands = $runner->getConsoleCommands($runner->getConsoleHelperSet());
         $this->assertTrue(is_array($commands));
     }
-
-    public function test_run_console_runner() {
-        $app = $this->createApp();
-        $app->start();
-
-        // reset global arguments for the doctrine console runner
-        $_SERVER['argv'] = [];
-
-        /** @var DoctrineConsoleRunner $runner */
-        $runner = $app->getContainer()->get(DoctrineConsoleRunner::class);
-        $runner->run();
-    }
 }

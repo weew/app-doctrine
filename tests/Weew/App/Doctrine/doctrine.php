@@ -15,6 +15,7 @@ $config->set(DoctrineConfig::CONFIG, [
 ]);
 
 $config->set(DoctrineConfig::ENTITIES_PATHS, '');
+$config->set(DoctrineConfig::METADATA_FORMAT, 'yaml');
 $config->set(DoctrineConfig::CACHE_PATH, '/tmp');
 $config->set(DoctrineConfig::MIGRATIONS_PATH, '/tmp');
 $config->set(DoctrineConfig::MIGRATIONS_NAMESPACE, 'migrations');

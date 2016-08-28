@@ -4,6 +4,7 @@ namespace Weew\App\Doctrine;
 
 use Weew\Config\Exceptions\InvalidConfigValueException;
 use Weew\Config\IConfig;
+use Weew\ConfigSchema\ConfigSchema;
 
 class DoctrineConfig implements IDoctrineConfig {
     const DEBUG = 'doctrine.debug';
@@ -32,27 +33,31 @@ class DoctrineConfig implements IDoctrineConfig {
     public function __construct(IConfig $config) {
         $this->config = $config;
 
-        $config
-            ->ensure(self::DEBUG, 'Missing debug setting.')
-            ->ensure(self::CONFIG, 'Missing doctrine config block.')
-            ->ensure(self::METADATA_FORMAT, 'Missing metadata format, supported formats are "annotations" and "yaml".')
-            ->ensure(self::CACHE_PATH, 'Missing doctrine cache directory path.')
-            ->ensure(self::MIGRATIONS_NAMESPACE, 'Missing namespace for doctrine migrations.')
-            ->ensure(self::MIGRATIONS_PATH, 'Missing directory path for doctrine migrations.')
-            ->ensure(self::MIGRATIONS_TABLE, 'Missing table name for doctrine migrations.');
+        $schema = new ConfigSchema($config);
+        $schema
+            ->hasBoolean(self::DEBUG, 'Missing debug setting.')
+            ->hasString(self::CACHE_PATH, 'Missing doctrine cache directory path.')
+            ->hasString(self::PROXY_CLASSES_PATH)->nullable()
+            ->hasString(self::METADATA_FORMAT, 'Missing metadata format, supported formats are "annotations" and "yaml".')->allowed(['yaml', 'annotations'])
+            ->hasArray(self::CONFIG, 'Missing doctrine config block.')
+            ->hasString(self::MIGRATIONS_NAMESPACE, 'Missing namespace for doctrine migrations.')
+            ->hasString(self::MIGRATIONS_PATH, 'Missing directory path for doctrine migrations.')
+            ->hasString(self::MIGRATIONS_TABLE, 'Missing table name for doctrine migrations.')
+        ;
 
         if ($this->getMetadataFormat() === 'annotations') {
-            $config
-                ->ensure(self::ENTITIES_PATHS, 'Missing doctrine entities paths for annotations format.', 'array');
+            $schema
+                ->hasArray(self::ENTITIES_PATHS, 'Missing doctrine entities paths for annotations format.')
+                ->hasArrayKeys(self::ENTITIES_PATHS)
+            ;
         } else if ($this->getMetadataFormat() === 'yaml') {
-            $config
-                ->ensure(self::ENTITIES_MAPPINGS, 'Missing doctrine entities mappings for yaml format.', 'array');
-        } else {
-            throw new InvalidConfigValueException(s(
-                'Invalid format "%s", supported formats are "annotations" and "yaml".',
-                $this->getMetadataFormat()
-            ));
+            $schema
+                ->hasArray(self::ENTITIES_MAPPINGS, 'Missing doctrine entities mappings for yaml format.')
+                ->hasArrayKeys(self::ENTITIES_MAPPINGS)
+            ;
         }
+
+        $schema->assert();
     }
 
     /**
